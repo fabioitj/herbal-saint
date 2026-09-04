@@ -15,7 +15,7 @@ export function ThemePicker() {
   useEffect(() => {
     const saved = (localStorage.getItem("herbal-saint-theme") as Theme | null) ?? "system";
     const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const sync = () => setDocumentTheme(saved);
+    const sync = () => setDocumentTheme((localStorage.getItem("herbal-saint-theme") as Theme | null) ?? "system");
     setTheme(saved);
     sync();
     media.addEventListener("change", sync);
