@@ -1,0 +1,293 @@
+/* These layouts apply only to the fixed immersive stage. The normal reading
+   layout, including reduced motion, continues to use globals.css. */
+@media (max-width: 760px) {
+  .botanical-site[data-immersive="true"] :is(.hero-frame, .belief-frame, .garden-frame, .formula-frame) {
+    min-height: 0;
+    height: 100%;
+  }
+  .botanical-site[data-immersive="true"] .hero-frame {
+    display: block;
+    padding: 94px 7% 54px;
+  }
+  .botanical-site[data-immersive="true"] .hero-copy { width: 100%; }
+  .botanical-site[data-immersive="true"] .hero-copy .eyebrow { margin-bottom: 17px; font-size: 8px; }
+  .botanical-site[data-immersive="true"] .hero h1 { font-size: clamp(42px, min(13.1vw, 8.1svh), 68px); line-height: .96; }
+  .botanical-site[data-immersive="true"] .hero-description { margin-top: 14px; font-size: 11px; line-height: 1.65; }
+  .botanical-site[data-immersive="true"] .round-link { margin-top: 13px; font-size: 10px; gap: 24px; }
+  .botanical-site[data-immersive="true"] .arrow-circle { width: 36px; height: 36px; }
+  .botanical-site[data-immersive="true"] .hero-visual {
+    position: absolute;
+    top: auto;
+    bottom: 58px;
+    right: 7%;
+    width: 76%;
+    height: clamp(180px, calc(100svh - 400px), 390px);
+    margin: 0;
+  }
+  .botanical-site[data-immersive="true"] .herbal-stamp { width: 70px; height: 70px; top: 33px; left: -26px; gap: 4px; }
+  .botanical-site[data-immersive="true"] .herbal-stamp svg { width: 22px; height: 26px; }
+  .botanical-site[data-immersive="true"] .herbal-stamp span { font-size: 4.5px; }
+  .botanical-site[data-immersive="true"] .hero-bottom { bottom: 19px; }
+  .botanical-site[data-immersive="true"] .scroll-line { height: 23px; }
+
+  .botanical-site[data-immersive="true"] .belief-frame { padding: 100px 7% 45px; }
+  .botanical-site[data-immersive="true"] .belief-content { margin: 24px 0; }
+  .botanical-site[data-immersive="true"] .belief-mark { width: 29px; height: 36px; margin-bottom: 20px; }
+  .botanical-site[data-immersive="true"] .belief h2 { font-size: clamp(32px, min(10.6vw, 6.3svh), 54px); line-height: 1.12; }
+  .botanical-site[data-immersive="true"] .belief-note { gap: 20px; }
+  .botanical-site[data-immersive="true"] .belief-note p { font-size: 9px; line-height: 1.7; }
+
+  .botanical-site[data-immersive="true"] .garden-frame { padding: 100px 7% 40px; }
+  .botanical-site[data-immersive="true"] .garden h2 { top: 31%; font-size: clamp(52px, min(18vw, 14svh), 100px); }
+  .botanical-site[data-immersive="true"] .garden h2 > span { margin-top: 21px; }
+  .botanical-site[data-immersive="true"] .garden-bottom { bottom: 45px; }
+
+  .botanical-site[data-immersive="true"] .formula-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 110px 7% 70px;
+  }
+  .botanical-site[data-immersive="true"] .formula-intro > .eyebrow { margin-bottom: 28px; }
+  .botanical-site[data-immersive="true"] .formula-intro h2 { font-size: clamp(31px, 9.5vw, 49px); line-height: 1.12; }
+  .botanical-site[data-immersive="true"] .formula-intro > div > p { font-size: 11px; margin-top: 25px; }
+  .botanical-site[data-immersive="true"] .formula-index { flex-direction: column; margin-top: 32px; }
+  .botanical-site[data-immersive="true"] .formula-index a { flex: none; border-right: 0; border-bottom: 1px solid var(--line); padding: 16px 0; font-size: 29px; gap: 18px; }
+  .botanical-site[data-immersive="true"] .formula-index a > span { font-size: 9px; }
+  .botanical-site[data-immersive="true"] .formula-index svg { width: 18px; }
+
+  .botanical-site[data-immersive="true"] .formula-frame { padding: 97px 7% 43px; }
+  .botanical-site[data-immersive="true"] .formula-story { width: 100%; margin: 24px 0 auto; }
+  .botanical-site[data-immersive="true"] .formula-story h3 { font-size: clamp(32px, min(9.7vw, 5.6svh), 46px); }
+  .botanical-site[data-immersive="true"] .formula-description { font-size: 11px; line-height: 1.65; max-width: 285px; margin: 14px 0 17px; }
+  .botanical-site[data-immersive="true"] .formula-story .text-link { font-size: 10px; }
+  .botanical-site[data-immersive="true"] .formula-watermark { top: 43%; font-size: 33vw; }
+  .botanical-site[data-immersive="true"] .specimen-stage { left: 6%; top: 45%; width: 88%; bottom: 15%; }
+  .botanical-site[data-immersive="true"] .specimen-bottle { left: 48%; top: 50%; }
+  .botanical-site[data-immersive="true"] .apothecary-bottle { transform: scale(.65); }
+  .botanical-site[data-immersive="true"] .specimen-stage > .botanical-sprig { height: 112%; bottom: -5%; }
+  .botanical-site[data-immersive="true"] .specimen-annotation { bottom: 8%; font-size: 9px; }
+  .botanical-site[data-immersive="true"] .formula-bottom { padding-top: 15px; }
+  .botanical-site[data-immersive="true"] .formula-name { font-size: 40px; }
+  .botanical-site[data-immersive="true"] .ingredient-list p { font-size: 11px; }
+
+  .botanical-site[data-immersive="true"] .ritual-section {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    gap: 30px;
+    padding: 105px 7% 54px;
+  }
+  .botanical-site[data-immersive="true"] .ritual-heading > .eyebrow { margin-bottom: 20px; }
+  .botanical-site[data-immersive="true"] .ritual-heading h2 { font-size: clamp(38px, 12vw, 58px); }
+  .botanical-site[data-immersive="true"] .ritual-heading > p:last-of-type { margin-top: 17px; font-size: 11px; }
+  .botanical-site[data-immersive="true"] .ritual-sprig { width: 100px; height: 145px; right: 0; bottom: -8px; }
+  .botanical-site[data-immersive="true"] .ritual-options { flex-direction: row; border-block: 1px solid var(--line); }
+  .botanical-site[data-immersive="true"] .ritual-options button {
+    flex: 1;
+    min-width: 0;
+    min-height: 61px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 8px;
+    border: 0;
+  }
+  .botanical-site[data-immersive="true"] .ritual-options button + button { border-left: 1px solid var(--line); }
+  .botanical-site[data-immersive="true"] .ritual-options button[aria-pressed="true"] { padding: 10px 8px; }
+  .botanical-site[data-immersive="true"] .ritual-options button > span:first-child { font-size: 8px; }
+  .botanical-site[data-immersive="true"] .ritual-options button > span:nth-child(2) { font-size: clamp(16px, 4.7vw, 24px); }
+  .botanical-site[data-immersive="true"] .ritual-options svg { display: none; }
+  .botanical-site[data-immersive="true"] .ritual-result { min-height: 0; padding-top: 23px; }
+  .botanical-site[data-immersive="true"] .ritual-result h3 { font-size: 30px; margin: 11px 0; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .botanical-site[data-immersive="true"] .ritual-result h3 > span { font-size: 11px; }
+  .botanical-site[data-immersive="true"] .ritual-result > p:last-of-type { font-size: 11px; line-height: 1.7; }
+  .botanical-site[data-immersive="true"] .ritual-result > a { font-size: 10px; margin-top: 19px; }
+
+  .botanical-site[data-immersive="true"] .journey-stage > .site-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 105px 7% 38px;
+  }
+  .botanical-site[data-immersive="true"] .footer-invitation { padding: 35px 0; }
+  .botanical-site[data-immersive="true"] .contact-circle { min-width: 0; min-height: 0; width: 65px; height: 65px; }
+  .botanical-site[data-immersive="true"] .footer-invitation h2 { font-size: clamp(39px, 12vw, 65px); }
+  .botanical-site[data-immersive="true"] .footer-details { padding-block: 18px; gap: 15px 12px; }
+  .botanical-site[data-immersive="true"] .footer-wordmark { font-size: 16.5vw; padding-top: 32px; }
+  .botanical-site[data-immersive="true"] .footer-fineprint { padding: 22px 0 0; gap: 11px; }
+}
+
+/* Compact portrait: keep the complete story visible on short phones. */
+@media (max-width: 760px) and (max-height: 680px) and (orientation: portrait) {
+  .botanical-site[data-immersive="true"] .hero-frame { padding-top: 85px; }
+  .botanical-site[data-immersive="true"] .hero-copy .eyebrow { margin-bottom: 12px; font-size: 7px; }
+  .botanical-site[data-immersive="true"] .hero-description { margin-top: 11px; font-size: 10px; }
+  .botanical-site[data-immersive="true"] .round-link { margin-top: 10px; }
+  .botanical-site[data-immersive="true"] .hero-visual { bottom: 49px; height: clamp(178px, calc(100svh - 376px), 275px); width: 68%; }
+  .botanical-site[data-immersive="true"] .herbal-stamp { width: 60px; height: 60px; left: -24px; top: 26px; }
+  .botanical-site[data-immersive="true"] .herbal-stamp span { font-size: 4px; }
+  .botanical-site[data-immersive="true"] .hero-bottom { bottom: 15px; }
+  .botanical-site[data-immersive="true"] .hero-bottom > a { font-size: 7px; }
+  .botanical-site[data-immersive="true"] .belief-frame { padding: 92px 7% 38px; }
+  .botanical-site[data-immersive="true"] .belief-content { margin: 16px 0; }
+  .botanical-site[data-immersive="true"] .belief-mark { width: 24px; height: 29px; margin-bottom: 15px; }
+  .botanical-site[data-immersive="true"] .belief h2 { font-size: clamp(30px, 9.8vw, 37px); }
+  .botanical-site[data-immersive="true"] .belief-note { gap: 14px; }
+  .botanical-site[data-immersive="true"] .belief-note p { font-size: 8px; }
+  .botanical-site[data-immersive="true"] .garden-frame { padding-top: 92px; }
+  .botanical-site[data-immersive="true"] .garden-bottom { bottom: 37px; }
+  .botanical-site[data-immersive="true"] .formula-intro { padding: 97px 7% 45px; }
+  .botanical-site[data-immersive="true"] .formula-intro > .eyebrow { margin-bottom: 19px; }
+  .botanical-site[data-immersive="true"] .formula-intro h2 { font-size: 30px; }
+  .botanical-site[data-immersive="true"] .formula-intro > div > p { margin-top: 18px; font-size: 10px; }
+  .botanical-site[data-immersive="true"] .formula-index { margin-top: 22px; }
+  .botanical-site[data-immersive="true"] .formula-index a { padding-block: 11px; font-size: 25px; }
+  .botanical-site[data-immersive="true"] .formula-frame { padding: 94px 7% 38px; }
+  .botanical-site[data-immersive="true"] .formula-story { width: 58%; margin-top: auto; margin-bottom: auto; padding-bottom: 7px; }
+  .botanical-site[data-immersive="true"] .formula-moment { font-size: 7px; margin-bottom: 12px; }
+  .botanical-site[data-immersive="true"] .formula-story h3 { font-size: clamp(27px, 8.6vw, 33px); line-height: 1.07; }
+  .botanical-site[data-immersive="true"] .formula-description { font-size: 10px; margin: 15px 0; line-height: 1.65; }
+  .botanical-site[data-immersive="true"] .formula-story .text-link { font-size: 9px; gap: 12px; }
+  .botanical-site[data-immersive="true"] .formula-watermark { top: 24%; font-size: 30vw; }
+  .botanical-site[data-immersive="true"] .specimen-stage { left: 61%; top: 25%; width: 32%; bottom: 22%; }
+  .botanical-site[data-immersive="true"] .specimen-bottle { left: 53%; top: 46%; }
+  .botanical-site[data-immersive="true"] .apothecary-bottle { transform: scale(.43); }
+  .botanical-site[data-immersive="true"] .specimen-stage > .botanical-sprig { width: 155%; height: 90%; right: -32%; bottom: 0; }
+  .botanical-site[data-immersive="true"] .specimen-annotation { right: -2%; bottom: 7%; max-width: 100%; font-size: 8px; text-align: right; }
+  .botanical-site[data-immersive="true"] .specimen-annotation > span { display: none; }
+  .botanical-site[data-immersive="true"] .formula-name { font-size: 35px; }
+  .botanical-site[data-immersive="true"] .ingredient-list p { font-size: 10px; }
+  .botanical-site[data-immersive="true"] .ritual-section { padding: 95px 7% 38px; gap: 21px; }
+  .botanical-site[data-immersive="true"] .ritual-heading > .eyebrow { margin-bottom: 13px; }
+  .botanical-site[data-immersive="true"] .ritual-heading h2 { font-size: 37px; }
+  .botanical-site[data-immersive="true"] .ritual-heading > p:last-of-type { font-size: 10px; margin-top: 11px; line-height: 1.65; }
+  .botanical-site[data-immersive="true"] .ritual-options button { min-height: 55px; }
+  .botanical-site[data-immersive="true"] .ritual-result { padding-top: 15px; }
+  .botanical-site[data-immersive="true"] .ritual-result h3 { font-size: 25px; margin: 8px 0; }
+  .botanical-site[data-immersive="true"] .ritual-result h3 > span { font-size: 10px; }
+  .botanical-site[data-immersive="true"] .ritual-result > p:last-of-type { font-size: 10px; line-height: 1.6; }
+  .botanical-site[data-immersive="true"] .ritual-result > a { margin-top: 13px; padding-bottom: 6px; }
+  .botanical-site[data-immersive="true"] .journey-stage > .site-footer { padding: 96px 7% 33px; }
+  .botanical-site[data-immersive="true"] .footer-invitation { padding: 22px 0; }
+  .botanical-site[data-immersive="true"] .footer-invitation h2 { font-size: 38px; }
+  .botanical-site[data-immersive="true"] .contact-circle { width: 53px; height: 53px; }
+  .botanical-site[data-immersive="true"] .footer-details { padding-block: 12px; gap: 10px 8px; }
+  .botanical-site[data-immersive="true"] .footer-wordmark { padding-top: 22px; }
+  .botanical-site[data-immersive="true"] .footer-fineprint { padding-top: 15px; gap: 8px; }
+}
+
+/* Landscape uses the available width instead of stacking a portrait page. */
+@media (max-height: 540px) and (orientation: landscape) {
+  .botanical-site[data-immersive="true"] .site-header { height: 58px; padding-inline: 5%; }
+  .botanical-site[data-immersive="true"] .brand > span { font-size: 26px; }
+  .botanical-site[data-immersive="true"] .brand > svg { width: 22px; height: 28px; }
+  .botanical-site[data-immersive="true"] .main-navigation { gap: 20px; }
+  .botanical-site[data-immersive="true"] .main-navigation a { font-size: 10px; }
+  .botanical-site[data-immersive="true"] .main-navigation.is-open { top: 57px; }
+  .botanical-site[data-immersive="true"] .header-contact { padding: 8px 12px; gap: 13px; font-size: 9px; }
+  .botanical-site[data-immersive="true"] .eyebrow { font-size: 7px; }
+  .botanical-site[data-immersive="true"] :is(.hero-frame, .belief-frame, .garden-frame, .formula-frame) { height: 100%; min-height: 0; }
+  .botanical-site[data-immersive="true"] .hero-frame { display: flex; padding: 78px 6% 40px; }
+  .botanical-site[data-immersive="true"] .hero-copy { width: 57%; }
+  .botanical-site[data-immersive="true"] .hero-copy .eyebrow { margin-bottom: 10px; }
+  .botanical-site[data-immersive="true"] .tiny-leaf { font-size: 13px; }
+  .botanical-site[data-immersive="true"] .hero h1 { font-size: clamp(31px, min(6.7vw, 11.6svh), 60px); line-height: .94; }
+  .botanical-site[data-immersive="true"] .hero-description { font-size: 9px; line-height: 1.5; margin-top: 10px; }
+  .botanical-site[data-immersive="true"] .round-link { font-size: 9px; margin-top: 9px; gap: 18px; }
+  .botanical-site[data-immersive="true"] .arrow-circle { width: 30px; height: 30px; }
+  .botanical-site[data-immersive="true"] .hero-visual { position: absolute; top: 78px; bottom: 42px; right: 7%; width: 37%; height: auto; margin: 0; }
+  .botanical-site[data-immersive="true"] .image-caption { font-size: 5px; }
+  .botanical-site[data-immersive="true"] .image-caption span:last-child { font-size: 9px; }
+  .botanical-site[data-immersive="true"] .herbal-stamp { width: 61px; height: 61px; top: 16px; left: auto; right: -17px; gap: 4px; }
+  .botanical-site[data-immersive="true"] .herbal-stamp svg { width: 18px; height: 24px; }
+  .botanical-site[data-immersive="true"] .herbal-stamp span { font-size: 4px; }
+  .botanical-site[data-immersive="true"] .hero-bottom { bottom: 13px; }
+  .botanical-site[data-immersive="true"] .hero-bottom > a { font-size: 6px; }
+  .botanical-site[data-immersive="true"] .hero-bottom > span:nth-child(2) { font-size: 11px; }
+  .botanical-site[data-immersive="true"] .scroll-line { height: 17px; }
+  .botanical-site[data-immersive="true"] .hero-index { font-size: 7px; }
+
+  .botanical-site[data-immersive="true"] .belief-frame { padding: 83px 7% 31px; }
+  .botanical-site[data-immersive="true"] .section-label span:last-child { font-size: 11px; }
+  .botanical-site[data-immersive="true"] .belief-content { display: flex; align-items: flex-start; gap: 5%; margin: 15px 0; }
+  .botanical-site[data-immersive="true"] .belief-mark { width: 28px; height: 36px; margin: 4px 0 0; }
+  .botanical-site[data-immersive="true"] .belief h2 { font-size: clamp(28px, min(5.1vw, 9.1svh), 44px); line-height: 1.1; }
+  .botanical-site[data-immersive="true"] .belief-note { grid-template-columns: 1fr 1fr; padding-left: calc(5% + 28px); gap: 25px; }
+  .botanical-site[data-immersive="true"] .belief-note > .small-cross { display: none; }
+  .botanical-site[data-immersive="true"] .belief-note p { font-size: 8px; line-height: 1.5; }
+  .botanical-site[data-immersive="true"] .garden-frame { padding: 84px 7% 30px; }
+  .botanical-site[data-immersive="true"] .garden h2 { top: 32%; font-size: clamp(43px, 14svh, 72px); }
+  .botanical-site[data-immersive="true"] .garden h2 > span { margin-top: 15px; font-size: .43em; }
+  .botanical-site[data-immersive="true"] .garden-bottom { bottom: 31px; align-items: end; }
+  .botanical-site[data-immersive="true"] .garden-bottom p { font-size: 9px; }
+  .botanical-site[data-immersive="true"] .garden-caption { font-size: 6px; max-width: 37%; }
+
+  .botanical-site[data-immersive="true"] .formula-intro { display: grid; grid-template-columns: 1.4fr 1fr; align-content: center; column-gap: 7%; padding: 88px 7% 35px; }
+  .botanical-site[data-immersive="true"] .formula-intro > .eyebrow { grid-column: 1 / -1; margin-bottom: 20px; }
+  .botanical-site[data-immersive="true"] .formula-intro > div { display: block; }
+  .botanical-site[data-immersive="true"] .formula-intro h2 { font-size: clamp(26px, 4.1vw, 39px); line-height: 1.12; }
+  .botanical-site[data-immersive="true"] .formula-intro > div > p { margin-top: 17px; font-size: 9px; padding: 0; }
+  .botanical-site[data-immersive="true"] .formula-index { flex-direction: column; margin: 0; }
+  .botanical-site[data-immersive="true"] .formula-index a { flex: none; padding: 14px 0; font-size: 26px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .botanical-site[data-immersive="true"] .formula-index a > span { font-size: 8px; }
+  .botanical-site[data-immersive="true"] .formula-index svg { width: 15px; }
+
+  .botanical-site[data-immersive="true"] .formula-frame { padding: 79px 7% 27px; }
+  .botanical-site[data-immersive="true"] .formula-topline { font-size: 7px; }
+  .botanical-site[data-immersive="true"] .formula-topline span:nth-child(2) { font-size: 11px; }
+  .botanical-site[data-immersive="true"] .formula-story { width: 45%; margin-block: auto; padding: 9px 0; }
+  .botanical-site[data-immersive="true"] .formula-moment { font-size: 7px; margin-bottom: 10px; }
+  .botanical-site[data-immersive="true"] .formula-story h3 { font-size: clamp(26px, min(4.4vw, 8.5svh), 43px); line-height: 1.04; }
+  .botanical-site[data-immersive="true"] .formula-description { font-size: 9px; line-height: 1.55; margin: 11px 0; max-width: 310px; }
+  .botanical-site[data-immersive="true"] .formula-story .text-link { font-size: 9px; padding-bottom: 6px; gap: 20px; }
+  .botanical-site[data-immersive="true"] .formula-watermark { top: 24%; font-size: 22vw; }
+  .botanical-site[data-immersive="true"] .specimen-stage { left: 51%; top: 24%; width: 42%; bottom: 22%; }
+  .botanical-site[data-immersive="true"] .specimen-bottle { left: 49%; top: 49%; }
+  .botanical-site[data-immersive="true"] .apothecary-bottle { transform: scale(.43); }
+  .botanical-site[data-immersive="true"] .specimen-stage > .botanical-sprig { height: 126%; right: -4%; bottom: -14%; }
+  .botanical-site[data-immersive="true"] .specimen-annotation { bottom: 6%; right: 0; font-size: 8px; }
+  .botanical-site[data-immersive="true"] .specimen-annotation > span { width: 20px; }
+  .botanical-site[data-immersive="true"] .formula-bottom { padding-top: 10px; gap: 20px; align-items: end; }
+  .botanical-site[data-immersive="true"] .formula-name { width: 37%; margin: 0; font-size: 36px; }
+  .botanical-site[data-immersive="true"] .ingredient-list > .eyebrow { display: none; }
+  .botanical-site[data-immersive="true"] .ingredient-list p { flex-direction: row; font-size: 12px; margin: 0; gap: 10px; }
+  .botanical-site[data-immersive="true"] .ingredient-list p > span + span::before { display: none; }
+  .botanical-site[data-immersive="true"] .next-formula { width: 29px; height: 29px; margin-left: auto; flex-shrink: 0; }
+  .botanical-site[data-immersive="true"] .next-formula svg { width: 13px; }
+
+  .botanical-site[data-immersive="true"] .ritual-section { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-content: center; gap: 7%; padding: 85px 7% 30px; }
+  .botanical-site[data-immersive="true"] .ritual-heading > .eyebrow { margin-bottom: 19px; }
+  .botanical-site[data-immersive="true"] .ritual-heading h2 { font-size: clamp(32px, 5vw, 48px); }
+  .botanical-site[data-immersive="true"] .ritual-heading > p:last-of-type { font-size: 9px; line-height: 1.7; margin-top: 15px; }
+  .botanical-site[data-immersive="true"] .ritual-sprig { width: 87px; height: 123px; bottom: -15px; right: -6px; }
+  .botanical-site[data-immersive="true"] .ritual-options { flex-direction: row; border-block: 1px solid var(--line); }
+  .botanical-site[data-immersive="true"] .ritual-options button { flex: 1; min-width: 0; min-height: 51px; flex-direction: column; justify-content: center; align-items: start; gap: 4px; padding: 8px 6px; border: 0; }
+  .botanical-site[data-immersive="true"] .ritual-options button + button { border-left: 1px solid var(--line); }
+  .botanical-site[data-immersive="true"] .ritual-options button[aria-pressed="true"] { padding: 8px 6px; }
+  .botanical-site[data-immersive="true"] .ritual-options button > span:first-child { font-size: 7px; }
+  .botanical-site[data-immersive="true"] .ritual-options button > span:nth-child(2) { font-size: clamp(15px, 2.2vw, 20px); }
+  .botanical-site[data-immersive="true"] .ritual-options svg { display: none; }
+  .botanical-site[data-immersive="true"] .ritual-result { min-height: 0; padding-top: 16px; }
+  .botanical-site[data-immersive="true"] .ritual-result h3 { font-size: 26px; margin: 8px 0; flex-direction: column; align-items: start; gap: 3px; }
+  .botanical-site[data-immersive="true"] .ritual-result h3 > span { font-size: 10px; }
+  .botanical-site[data-immersive="true"] .ritual-result > p:last-of-type { font-size: 9px; line-height: 1.6; }
+  .botanical-site[data-immersive="true"] .ritual-result > a { font-size: 9px; margin-top: 12px; padding-bottom: 6px; }
+
+  .botanical-site[data-immersive="true"] .journey-stage > .site-footer { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; gap: 16px 6%; padding: 81px 7% 24px; }
+  .botanical-site[data-immersive="true"] .footer-top { grid-column: 1 / -1; }
+  .botanical-site[data-immersive="true"] .footer-top > span { display: none; }
+  .botanical-site[data-immersive="true"] .footer-invitation { grid-column: 1; grid-row: 2; align-items: center; gap: 15px; padding: 0; }
+  .botanical-site[data-immersive="true"] .footer-invitation h2 { font-size: clamp(31px, min(4.8vw, 10svh), 49px); }
+  .botanical-site[data-immersive="true"] .contact-circle { width: 51px; height: 51px; min-width: 0; min-height: 0; margin: 0; flex-shrink: 0; }
+  .botanical-site[data-immersive="true"] .contact-circle svg { width: 23px; height: 23px; }
+  .botanical-site[data-immersive="true"] .contact-circle > span { display: none; }
+  .botanical-site[data-immersive="true"] .footer-details { grid-column: 2; grid-row: 2; display: flex; flex-wrap: wrap; align-content: center; align-items: center; justify-content: space-between; gap: 16px 10px; padding: 17px 0; }
+  .botanical-site[data-immersive="true"] .footer-details > a { font-size: 9px; }
+  .botanical-site[data-immersive="true"] .footer-details > a:first-child { width: 100%; }
+  .botanical-site[data-immersive="true"] .footer-theme > span { display: none; }
+  .botanical-site[data-immersive="true"] .theme-picker button { width: 30px; height: 30px; }
+  .botanical-site[data-immersive="true"] .footer-wordmark { grid-column: 1; grid-row: 3; font-size: clamp(37px, 7.4vw, 76px); padding: 0; }
+  .botanical-site[data-immersive="true"] .footer-fineprint { grid-column: 2; grid-row: 3; display: flex; flex-wrap: wrap; align-content: end; gap: 7px 12px; padding: 0; font-size: 6px; }
+  .botanical-site[data-immersive="true"] .footer-fineprint p { width: 100%; font-size: 7px; }
+}

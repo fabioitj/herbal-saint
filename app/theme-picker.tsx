@@ -1,29 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Theme = "light" | "system" | "dark";
 
+function readSavedTheme(): Theme {
+  try {
+    const saved = localStorage.getItem("herbal-saint-theme");
+    return saved === "light" || saved === "dark" || saved === "system" ? saved : "light";
+  } catch {
+    return "light";
+  }
+}
+
 function setDocumentTheme(theme: Theme) {
-  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  document.documentElement.dataset.theme = theme === "system" ? (dark ? "dark" : "light") : theme;
+  document.documentElement.dataset.theme = theme === "system"
+    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    : theme;
 }
 
 export function ThemePicker() {
-  const [theme, setTheme] = useState<Theme>("system");
+  const [theme, setTheme] = useState<Theme>("light");
+  const currentTheme = useRef<Theme>("light");
 
   useEffect(() => {
-    const saved = (localStorage.getItem("herbal-saint-theme") as Theme | null) ?? "system";
+    const saved = readSavedTheme();
     const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const sync = () => setDocumentTheme((localStorage.getItem("herbal-saint-theme") as Theme | null) ?? "system");
+    const sync = () => {
+      if (currentTheme.current === "system") setDocumentTheme("system");
+    };
+    currentTheme.current = saved;
     setTheme(saved);
-    sync();
+    setDocumentTheme(saved);
     media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);
   }, []);
 
   function choose(next: Theme) {
-    localStorage.setItem("herbal-saint-theme", next);
+    try {
+      localStorage.setItem("herbal-saint-theme", next);
+    } catch {
+      // Keep the current choice usable when the browser blocks persistence.
+    }
+    currentTheme.current = next;
     setTheme(next);
     setDocumentTheme(next);
   }

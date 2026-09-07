@@ -1,138 +1,169 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ThemePicker } from "./theme-picker";
+import { useBotanicalJourney } from "./use-botanical-journey";
 
 const formulas = [
-  { id: "vitalis", number: "01", name: "VITALIS", verb: "DESPERTE", statement: "Energia que nasce da raiz.", ingredients: "Guaraná · Ginseng · Cúrcuma", color: "#baff39" },
-  { id: "sereno", number: "02", name: "SERENO", verb: "RESPIRE", statement: "Calma que encontra espaço.", ingredients: "Passiflora · Melissa · Camomila", color: "#ff7657" },
-  { id: "flora", number: "03", name: "FLORA", verb: "RESTAURE", statement: "Equilíbrio que volta a florescer.", ingredients: "Funcho · Gengibre · Hortelã", color: "#bba8ff" },
+  {
+    id: "vitalis", number: "01", name: "Vitalis", verb: "desperte", moment: "Para começar", time: "O primeiro respiro do dia",
+    title: <>Um novo dia.<br /><em>Um novo ritmo.</em></>,
+    description: "Abra as janelas. Sinta a luz. Um encontro com as plantas para acompanhar os seus começos.",
+    ingredients: ["Guaraná", "Ginseng", "Cúrcuma"], botanical: "Paullinia cupana", color: "#a37a3d", wash: "#e6dfca", leaf: "#7d8350",
+    ritual: "Antes de entrar no ritmo do mundo, encontre o seu. Abra a janela e reserve um momento só para você.",
+  },
+  {
+    id: "sereno", number: "02", name: "Sereno", verb: "respire", moment: "Para desacelerar", time: "Uma pausa no meio de tudo",
+    title: <>Menos pressa.<br /><em>Mais presença.</em></>,
+    description: "Entre um compromisso e outro, existe um espaço que é seu. Habite essa pausa com delicadeza.",
+    ingredients: ["Passiflora", "Melissa", "Camomila"], botanical: "Matricaria chamomilla", color: "#6e795c", wash: "#dce0d1", leaf: "#647c5b",
+    ritual: "Solte os ombros. Afaste a tela por um instante. Inspire devagar e perceba o que está à sua volta.",
+  },
+  {
+    id: "flora", number: "03", name: "Flora", verb: "floresça", moment: "Para reconectar", time: "O cuidado que volta para você",
+    title: <>Volte ao simples.<br /><em>Volte a você.</em></>,
+    description: "Cuidar também é escutar. Pequenos gestos, repetidos com intenção, abrem espaço para o seu ritmo natural.",
+    ingredients: ["Funcho", "Gengibre", "Hortelã"], botanical: "Mentha spicata", color: "#97634d", wash: "#eadbcf", leaf: "#6c7d60",
+    ritual: "Prepare um lugar confortável. Deixe o dia lá fora por um momento e faça algo simples que você ama.",
+  },
 ] as const;
 
-function Mark() {
-  return <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 36C20 23 25 14 34 5M20 36C20 24 14 16 5 11"/><path d="M33 6c-7 0-11 4-13 11 8 0 12-4 13-11ZM6 12c7 0 11 4 13 11-8 0-12-4-13-11Z"/></svg>;
+function Arrow({ diagonal = false }: { diagonal?: boolean }) {
+  return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal ? "M5 19 19 5M5 5h14v14" : "M4 12h15m-6-6 6 6-6 6"} stroke="currentColor" strokeWidth="1.3" /></svg>;
 }
 
-function Bottle({ name }: { name: string }) {
-  return <div className="scroll-bottle" aria-hidden="true"><div className="bottle-shadow"/><div className="bottle-cap"/><div className="bottle-glass"><div className="bottle-shine"/><div className="bottle-label"><small>HERBAL SAINT®</small><strong>{name}</strong><span>BOTANICAL FORMULA</span></div></div><i className="bottle-orbit"/><i className="bottle-orbit orbit-b"/></div>;
+function Mark({ className = "" }: { className?: string }) {
+  return <svg className={className} viewBox="0 0 40 48" fill="none" aria-hidden="true"><path d="M20 45V19M20 33C8 33 4 24 5 17c11 0 15 7 15 16Zm0-10C31 23 36 13 34 5c-11 2-14 10-14 18ZM20 42C9 42 7 36 7 31m13 6c10 0 14-6 14-13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /><path d="m20 23 10-12M20 33 9 22" stroke="currentColor" strokeWidth=".7" /></svg>;
 }
 
-function Atmosphere({ progress }: { progress: React.RefObject<number> }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (!canvas || !context) return;
-    let width = 0, height = 0, frame = 0;
-    const pointer = { x: innerWidth / 2, y: innerHeight / 2 };
-    const seeds = Array.from({ length: 64 }, (_, index) => ({ angle: index * 2.399, distance: 70 + index % 16 * 28, size: 1 + index % 3 }));
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // ponytail: Canvas 2D is enough for a responsive organic field; use WebGL only when real 3D assets exist.
-    const resize = () => { const ratio = Math.min(devicePixelRatio, 2); width = canvas.clientWidth; height = canvas.clientHeight; canvas.width = width * ratio; canvas.height = height * ratio; context.setTransform(ratio, 0, 0, ratio, 0, 0); };
-    const move = (event: PointerEvent) => { pointer.x = event.clientX; pointer.y = event.clientY; };
-    const draw = (time = 0) => {
-      context.clearRect(0, 0, width, height);
-      const ink = getComputedStyle(document.documentElement).getPropertyValue("--field").trim();
-      const cx = width / 2 + (pointer.x - width / 2) * .04, cy = height / 2 + (pointer.y - height / 2) * .04;
-      context.strokeStyle = ink; context.fillStyle = ink;
-      seeds.forEach((seed, index) => {
-        const angle = seed.angle + time * .000025 + progress.current * Math.PI * 3;
-        const distance = seed.distance + Math.sin(time * .0004 + index) * 18;
-        const x = cx + Math.cos(angle) * distance, y = cy + Math.sin(angle) * distance * .58;
-        context.globalAlpha = .04 + index % 5 * .025;
-        context.beginPath(); context.moveTo(cx, cy); context.quadraticCurveTo(cx + Math.sin(angle) * 130, cy - Math.cos(angle) * 90, x, y); context.stroke();
-        context.globalAlpha = .2; context.beginPath(); context.arc(x, y, seed.size, 0, Math.PI * 2); context.fill();
-      });
-      context.globalAlpha = 1;
-      if (!reduced) frame = requestAnimationFrame(draw);
-    };
-    resize(); draw(); addEventListener("resize", resize); addEventListener("pointermove", move);
-    return () => { cancelAnimationFrame(frame); removeEventListener("resize", resize); removeEventListener("pointermove", move); };
-  }, [progress]);
-  return <canvas ref={canvasRef} className="atmosphere" aria-hidden="true"/>;
+// A botanical engraving whose stem is drawn as its chapter enters.
+function BotanicalSprig({ className = "", flowering = false }: { className?: string; flowering?: boolean }) {
+  const leaves = [
+    { x: 137, y: 342, r: -65, s: 1.1 }, { x: 145, y: 305, r: 45, s: 1.2 },
+    { x: 151, y: 270, r: -60, s: 1.05 }, { x: 156, y: 233, r: 48, s: 1.1 },
+    { x: 166, y: 194, r: -48, s: .9 }, { x: 171, y: 158, r: 42, s: .9 },
+    { x: 181, y: 120, r: -37, s: .8 }, { x: 185, y: 88, r: 30, s: .66 },
+  ];
+  return <svg className={`botanical-sprig ${className}`} viewBox="0 0 320 430" fill="none" aria-hidden="true">
+    <path className="botanical-stem" pathLength="1" d="M112 422c34-63 28-112 45-198S178 106 204 30" />
+    {leaves.map((leaf, index) => <g key={index} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.r}) scale(${leaf.s})`}>
+      <path className="botanical-leaf" d="M0 0C-39-17-46-64-15-104 21-76 29-29 0 0Z" />
+      <path d="M0 0c-3-26-6-61-15-104M-4-23l-20-14m19 3 15-20M-8-47l-23-17m20 5 14-18M-12-74l-15-12" />
+    </g>)}
+    {flowering && [[75, 100], [246, 169], [87, 231]].map(([x, y], index) => <g key={index} transform={`translate(${x} ${y})`}>
+      <path d={`M0 0Q${index % 2 ? -30 : 65} 70 ${160 - x} ${320 - y}`} />
+      {Array.from({ length: 9 }, (_, i) => <ellipse key={i} cx="0" cy="-17" rx="6" ry="15" transform={`rotate(${i * 40})`} className="botanical-petal" />)}
+      <circle r="10" className="botanical-center" />
+    </g>)}
+  </svg>;
 }
+
+function Bottle({ formula }: { formula: typeof formulas[number] }) {
+  return <div className="apothecary-bottle" aria-hidden="true">
+    <div className="bottle-ground" /><div className="bottle-neck" /><div className="bottle-cap"><span /></div>
+    <div className="bottle-glass"><div className="bottle-label">
+      <span className="bottle-brand">HERBAL SAINT</span><Mark />
+      <span className="bottle-formula">{formula.name}</span><span className="bottle-rule" />
+      <span className="bottle-label-note">FÓRMULA BOTÂNICA</span>
+      <span className="bottle-label-ingredients">{formula.ingredients.join(" · ")}</span>
+      <span className="bottle-edition">Nº {formula.number} <span>ORIGEM NATURAL</span></span>
+    </div></div>
+  </div>;
+}
+
+const beliefWords = "A gente acredita que o cuidado floresce quando você se aproxima da natureza.".split(" ");
 
 export function ScrollExperience() {
-  const progress = useRef(0);
-  const [chapter, setChapter] = useState("origin");
+  const root = useRef<HTMLElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const activeSection = useBotanicalJourney(root);
+  const [ritual, setRitual] = useState(1);
 
   useEffect(() => {
-    let scheduled = false;
-    const update = () => {
-      progress.current = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      document.documentElement.style.setProperty("--page-progress", String(progress.current));
-      let closest = { distance: Infinity, chapter: "origin" };
-      document.querySelectorAll<HTMLElement>("[data-scene]").forEach((scene) => {
-        const rect = scene.getBoundingClientRect();
-        const local = Math.max(0, Math.min(1, (innerHeight - rect.top) / (rect.height + innerHeight)));
-        const peak = Math.sin(local * Math.PI);
-        scene.style.setProperty("--scene-progress", String(local));
-        scene.style.setProperty("--scene-opacity", String(Math.min(1, peak * 2.2)));
-        scene.style.setProperty("--scene-y", `${(0.5 - local) * innerHeight * .55}px`);
-        scene.style.setProperty("--scene-x", `${(0.5 - local) * innerWidth * .22}px`);
-        scene.style.setProperty("--scene-scale", String(.72 + peak * .34));
-        scene.style.setProperty("--scene-rotate", `${(0.5 - local) * 34}deg`);
-        const distance = Math.abs(rect.top + rect.height / 2 - innerHeight / 2);
-        if (distance < closest.distance) closest = { distance, chapter: scene.dataset.chapter ?? "origin" };
-      });
-      setChapter(closest.chapter); scheduled = false;
-    };
-    const scroll = () => { if (!scheduled) { scheduled = true; requestAnimationFrame(update); } };
-    update(); addEventListener("scroll", scroll, { passive: true }); addEventListener("resize", update);
-    return () => { removeEventListener("scroll", scroll); removeEventListener("resize", update); };
-  }, []);
+    if (!menuOpen) return;
+    root.current?.querySelector<HTMLAnchorElement>(".main-navigation a")?.focus();
+    const dismiss = (event: KeyboardEvent) => { if (event.key === "Escape") { setMenuOpen(false); menuButton.current?.focus(); } };
+    const desktop = matchMedia("(min-width: 761px)");
+    const closeOnDesktop = () => { if (desktop.matches) setMenuOpen(false); };
+    addEventListener("keydown", dismiss);
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => { removeEventListener("keydown", dismiss); desktop.removeEventListener("change", closeOnDesktop); };
+  }, [menuOpen]);
 
-  return (
-    <main className="scroll-site" data-chapter={chapter}>
-      <Atmosphere progress={progress}/><div className="grain" aria-hidden="true"/>
-      <header className="scroll-nav">
-        <a className="scroll-brand" href="#origin"><Mark/><span>HERBAL<br/>SAINT</span></a>
-        <span className="chapter-readout">NOW ENTERING<br/><b>{chapter.toUpperCase()}</b></span>
-        <ThemePicker/>
-        <a className="nav-contact" href="#contact">CONTACT <i>↗</i></a>
-      </header>
-      <aside className="progress-rail" aria-hidden="true"><span>00</span><i/><span>04</span></aside>
-
-      <section className="scroll-scene origin-scene" id="origin" data-scene data-chapter="origin">
-        <div className="sticky-frame">
-          <p className="scene-code">[ SCROLL TO AWAKEN ]</p>
-          <h1><span>PLANTS</span><em>REMEMBER</em><span>WHAT WE FORGOT.</span></h1>
-          <div className="origin-bottle"><Bottle name="VITALIS"/></div>
-          <p className="origin-note">A botanical scroll experience<br/>by Herbal Saint®</p>
-          <div className="scroll-prompt"><i>↓</i><span>BEGIN THE DESCENT</span></div>
+  const selection = formulas[ritual];
+  return <main className="botanical-site" ref={root} data-section={activeSection}>
+    <a href="#essencia" className="skip-link">Pular para o conteúdo</a>
+    <div className="paper-grain" aria-hidden="true" />
+    <header className="site-header" onBlur={(event) => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setMenuOpen(false); }}>
+      <a className="brand" href="#origin" aria-label="Herbal Saint — início" onClick={() => setMenuOpen(false)}><Mark /><span>herbal saint<span className="brand-period">®</span></span></a>
+      <nav className={`main-navigation ${menuOpen ? "is-open" : ""}`} id="main-navigation" aria-label="Navegação principal">
+        <a href="#essencia" aria-current={activeSection === "essencia" ? "location" : undefined} onClick={() => setMenuOpen(false)}>Nossa essência</a>
+        <a href="#formulas" aria-current={activeSection === "formulas" ? "location" : undefined} onClick={() => setMenuOpen(false)}>As fórmulas</a>
+        <a href="#ritual" aria-current={activeSection === "ritual" ? "location" : undefined} onClick={() => setMenuOpen(false)}>Seu ritual</a>
+      </nav>
+      <a className="header-contact" href="#contact">Vamos conversar <Arrow diagonal /></a>
+      <button className="menu-toggle" ref={menuButton} type="button" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} aria-controls="main-navigation" onClick={() => setMenuOpen(!menuOpen)}><span /><span /></button>
+      <div className="reading-progress" aria-hidden="true" />
+    </header>
+    <div className="journey"><div className="journey-stage">
+    <section className="hero story-scene" id="origin" data-motion data-chapter="origin" aria-labelledby="hero-heading">
+      <div className="hero-frame pinned-frame">
+        <div className="hero-copy">
+          <p className="eyebrow"><span className="tiny-leaf">✳</span> BOTÂNICA PARA A VIDA REAL</p>
+          <h1 id="hero-heading">A natureza<br />tem seu<br /><em>próprio ritmo.</em></h1>
+          <p className="hero-description">E você também.<br />Redescubra o cuidado que começa na raiz.</p>
+          <a className="round-link" href="#ritual"><span>Encontre seu ritual</span><span className="arrow-circle"><Arrow diagonal /></span></a>
         </div>
-      </section>
-
-      <section className="scroll-scene belief-scene" data-scene data-chapter="belief">
-        <div className="sticky-frame">
-          <p className="scene-code">[ 00 / THE BELIEF ]</p>
-          <div className="belief-copy"><p>Nature is not<br/>an aesthetic.</p><p>It is the oldest<br/><em>technology.</em></p></div>
-          <div className="cell"><span/><span/><span/><b>BOTANICAL<br/>INTELLIGENCE</b></div>
+        <div className="hero-visual">
+          <div className="hero-image"><Image src="/images/hero-apothecary.webp" alt="Frasco de vidro âmbar Herbal Saint entre folhas frescas e flores de camomila sobre pedra natural" fill sizes="(max-width: 760px) 100vw, 55vw" preload /></div>
+          <div className="image-caption"><span>DA TERRA. COM INTENÇÃO.</span><span>Fig. 01 — A origem</span></div>
+          <div className="herbal-stamp" aria-hidden="true"><span>FEITO DE NATUREZA</span><Mark /><span>FEITO PARA VOCÊ</span></div>
         </div>
-      </section>
-
-      {formulas.map((formula) => (
-        <section className={`scroll-scene formula-chapter ${formula.id}`} id={formula.id} data-scene data-chapter={formula.id} key={formula.id} style={{ "--formula": formula.color } as React.CSSProperties}>
-          <div className="sticky-frame">
-            <div className="formula-wash"/>
-            <p className="scene-code">[ FORMULA / {formula.number} ]</p>
-            <div className="formula-title"><span>{formula.verb}</span><h2>{formula.name}</h2></div>
-            <div className="chapter-bottle"><Bottle name={formula.name}/></div>
-            <div className="chapter-copy"><strong>{formula.statement}</strong><p>{formula.ingredients}</p><p>Uma frequência botânica criada para acompanhar o seu ritmo natural.</p><a href="mailto:contato@herbalsaint.com.br">DISCOVER FORMULA <i>↗</i></a></div>
-            <div className="chapter-number">{formula.number}</div>
-          </div>
-        </section>
-      ))}
-
-      <section className="scroll-scene finale" id="contact" data-scene data-chapter="ritual">
-        <div className="sticky-frame">
-          <p className="scene-code">[ THE RITUAL STARTS HERE ]</p>
-          <h2>FEEL<br/><em>ALIVE.</em></h2>
-          <a href="mailto:contato@herbalsaint.com.br"><span>COMEÇAR UMA CONVERSA</span><i>↗</i></a>
-          <footer><span>HERBAL SAINT®</span><span>FEITO NO BRASIL</span><span>CONTEÚDO NÃO SUBSTITUI ORIENTAÇÃO PROFISSIONAL</span><span>© {new Date().getFullYear()}</span></footer>
-        </div>
-      </section>
-    </main>
-  );
+        <div className="hero-bottom"><a href="#essencia"><span className="scroll-line" /> DESACELERE. EXPLORE.</a><span>Um pequeno retorno ao essencial.</span><span className="hero-index">01 — 05</span></div>
+      </div>
+    </section>
+    <section className="belief story-scene" id="essencia" data-motion data-chapter="essencia" aria-labelledby="belief-heading">
+      <div className="belief-frame pinned-frame">
+        <p className="eyebrow section-label"><span>01 / NOSSA ESSÊNCIA</span><span>O simples tem raízes profundas.</span></p>
+        <div className="belief-content"><Mark className="belief-mark" /><h2 id="belief-heading" aria-label={beliefWords.join(" ")}>{beliefWords.map((word, index) => <span key={index} data-word aria-hidden="true" style={{ "--word-index": index } as CSSProperties} className={index >= 10 ? "belief-emphasis" : ""}>{word}{" "}</span>)}</h2></div>
+        <div className="belief-note"><span className="small-cross">+</span><p>Não precisa ser complicado.<br />Só precisa fazer sentido para você.</p><p>Plantas, tempo e intenção.<br />É desse encontro que nasce a Herbal Saint.</p></div>
+      </div>
+    </section>
+    <section className="garden story-scene" id="jardim" data-motion data-chapter="essencia" aria-labelledby="garden-heading">
+      <div className="garden-frame pinned-frame">
+        <Image className="garden-photo" src="/images/herb-garden.webp" alt="Jardim de ervas verdes e camomilas brancas sob a luz suave do sol" fill sizes="100vw" />
+        <div className="garden-shade" /><p className="eyebrow">UM CONVITE PARA SENTIR</p>
+        <h2 id="garden-heading">Mais perto<br />da <em>terra.</em><br /><span>Mais perto de você.</span></h2>
+        <div className="garden-bottom"><p>O tempo de uma folha crescer.<br />O espaço de uma respiração.</p><span className="garden-caption">NATUREZA EM SEU ESTADO MAIS SINCERO <span>↘</span></span></div>
+      </div>
+    </section>
+    <section className="formula-intro" id="formulas" data-motion data-chapter="formulas" aria-labelledby="formulas-heading">
+      <p className="eyebrow">02 / NOSSO HERBÁRIO</p>
+      <div><h2 id="formulas-heading">Cada planta, uma história.<br /><em>Cada momento, um cuidado.</em></h2><p>Três encontros com a natureza.<br />Descubra qual conversa com o seu agora.</p></div>
+      <nav className="formula-index" aria-label="Escolher uma fórmula">{formulas.map(formula => <a href={`#${formula.id}`} key={formula.id}><span>{formula.number}</span>{formula.name}<Arrow diagonal /></a>)}</nav>
+    </section>
+    {formulas.map((formula, index) => <section className={`formula-scene story-scene ${formula.id}`} id={formula.id} data-motion data-chapter="formulas" key={formula.id} aria-labelledby={`${formula.id}-heading`} style={{ "--accent": formula.color, "--wash": formula.wash, "--leaf": formula.leaf } as CSSProperties}>
+      <div className="formula-frame pinned-frame">
+        <div className="formula-topline eyebrow"><span>HERBÁRIO / Nº {formula.number}</span><span>{formula.time}</span><span>{formula.number} / 03</span></div>
+        <span className="formula-watermark" aria-hidden="true">{formula.verb}</span>
+        <div className="formula-story"><p className="eyebrow formula-moment">{formula.moment}</p><h3 id={`${formula.id}-heading`}>{formula.title}</h3><p className="formula-description">{formula.description}</p><a className="text-link" href={`mailto:contato@herbalsaint.com.br?subject=${encodeURIComponent(`Quero conhecer a fórmula ${formula.name}`)}`}>Conheça {formula.name} <Arrow diagonal /></a></div>
+        <div className="specimen-stage"><BotanicalSprig flowering={formula.id === "sereno"} /><div className="specimen-bottle"><Bottle formula={formula} /></div><span className="specimen-annotation"><span />{formula.botanical}</span></div>
+        <div className="formula-bottom"><span className="formula-name">{formula.name}<sup>®</sup></span><div className="ingredient-list"><span className="eyebrow">AS PLANTAS DESTE ENCONTRO</span><p>{formula.ingredients.map(ingredient => <span key={ingredient}>{ingredient}</span>)}</p></div><a className="next-formula" href={index === formulas.length - 1 ? "#ritual" : `#${formulas[index + 1].id}`} aria-label={index === formulas.length - 1 ? "Encontre seu ritual" : "Próxima fórmula"}><Arrow /></a></div>
+      </div>
+    </section>)}
+    <section className="ritual-section" id="ritual" data-motion data-chapter="ritual" aria-labelledby="ritual-heading">
+      <div className="ritual-heading"><p className="eyebrow">03 / UM MOMENTO SEU</p><h2 id="ritual-heading">Do que o seu<br /><em>agora precisa?</em></h2><p>Não existe um único jeito de se cuidar.<br />Comece por escutar você.</p><BotanicalSprig className="ritual-sprig" flowering /></div>
+      <div className="ritual-selector"><div className="ritual-options" role="group" aria-label="Escolha o seu momento">{formulas.map((formula, index) => <button key={formula.id} type="button" aria-pressed={ritual === index} onClick={() => setRitual(index)}><span>{formula.number}</span><span>{formula.moment.replace("Para ", "")}</span><Arrow diagonal /></button>)}</div><div className="ritual-result" aria-live="polite" aria-atomic="true"><p className="eyebrow">SEU CONVITE DE HOJE</p><h3>{selection.name}<span>{selection.ingredients.join(" · ")}</span></h3><p>{selection.ritual}</p><a className="text-link" href={`#${selection.id}`}>Explore esse encontro <Arrow diagonal /></a></div></div>
+    </section>
+    <footer className="site-footer" id="contact" data-motion data-chapter="contact">
+      <div className="footer-top"><p className="eyebrow">04 / CULTIVE ESSA CONEXÃO</p><span>Sem pressa. Estamos por aqui.</span></div>
+      <div className="footer-invitation"><h2>O seu próximo<br />ritual começa<br /><em>com um olá.</em></h2><a href="mailto:contato@herbalsaint.com.br" className="contact-circle" aria-label="Enviar um e-mail para a Herbal Saint"><Arrow diagonal /><span>VAMOS CONVERSAR</span></a></div>
+      <div className="footer-details"><a href="mailto:contato@herbalsaint.com.br">contato@herbalsaint.com.br <Arrow diagonal /></a><div className="footer-theme"><span>A LUZ DO SEU JARDIM</span><ThemePicker /></div><a href="#origin">Voltar às raízes ↑</a></div>
+      <div className="footer-wordmark" aria-hidden="true">herbal saint<Mark /></div>
+      <div className="footer-fineprint"><span>© {new Date().getFullYear()} HERBAL SAINT</span><span>FEITO NO BRASIL. COM INTENÇÃO.</span><p>Conteúdo informativo. Não substitui orientação profissional.</p></div>
+    </footer>
+    </div></div>
+  </main>;
 }
